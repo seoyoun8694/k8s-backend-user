@@ -27,10 +27,10 @@ pipeline {
 
     environment {
         GIT_URL = "https://github.com/seoyoun8694/k8s-backend-user.git"
-        GITHUB_CREDENTIAL = "github-token"
+        GITHUB_CREDENTIAL = "github-id"
         ARTIFACTS = "build/libs/**"
-        DOCKER_REGISTRY = "solarhc"
-        DOCKERHUB_CREDENTIAL = 'dockerhub-token'
+        DOCKER_REGISTRY = "seoyoun8694"
+        DOCKERHUB_CREDENTIAL = 'dockerhub-id'
     }
 
     options {
