@@ -17,4 +17,4 @@ spring:
     show-sql: true
     open-in-view: false
   kafka:
-    bootstrap-servers: 192.168.219.118:9092
+    bootstrap-servers: k8s-external-kafka-service:9092
