@@ -18,4 +18,4 @@ spring:
     open-in-view: false
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.219.118:9092
