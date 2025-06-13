@@ -16,10 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final KafkaMessageProducer kafkaMessageProducer;
+
     @Transactional
     public void registerUser(SiteUserRegisterDto registerDto) {
         SiteUser siteUser = registerDto.toEntity();
+
         siteUserRepository.save(siteUser);
-        SiteUserInfoEvent event = SiteUserInfoEvent.fromEntity("Create", siteUser);kafkaMessageProducer.send(SiteUserInfoEvent.Topic, event);
+
+        SiteUserInfoEvent event = SiteUserInfoEvent.fromEntity("Create", siteUser);
+        kafkaMessageProducer.send(SiteUserInfoEvent.Topic, event);
     }
 }

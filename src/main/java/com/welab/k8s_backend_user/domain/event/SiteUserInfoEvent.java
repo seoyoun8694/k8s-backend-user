@@ -10,15 +10,23 @@ import java.time.LocalDateTime;
 @Setter
 public class SiteUserInfoEvent {
     public static final String Topic = "userinfo";
+
     private String action;
+
     private String userId;
+
     private String phoneNumber;
+
     private LocalDateTime eventTime;
-    public static SiteUserInfoEvent fromEntity(String action, SiteUser siteUser) {SiteUserInfoEvent event = new SiteUserInfoEvent();
+
+    public static SiteUserInfoEvent fromEntity(String action, SiteUser siteUser) {
+        SiteUserInfoEvent event = new SiteUserInfoEvent();
+
         event.action = action;
         event.userId = siteUser.getUserId();
         event.phoneNumber = siteUser.getPhoneNumber();
         event.eventTime = LocalDateTime.now();
+
         return event;
     }
 }
