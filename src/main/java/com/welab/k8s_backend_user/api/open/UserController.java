@@ -1,6 +1,7 @@
 package com.welab.k8s_backend_user.api.open;
 
 import com.welab.k8s_backend_user.common.dto.ApiResponseDto;
+import com.welab.k8s_backend_user.common.web.context.GatewayRequestHeaderUtils;
 import com.welab.k8s_backend_user.domain.dto.SiteUserRegisterDto;
 import com.welab.k8s_backend_user.remote.alim.RemoteAlimService;
 import com.welab.k8s_backend_user.service.SiteUserService;
@@ -19,9 +20,10 @@ public class UserController {
     private final RemoteAlimService remoteAlimService;
 
     @GetMapping(value = "/test")
-    public String test() {
-        String remoteMessage = remoteAlimService.hello().getData();
-
-        return "웰컴 투 유저 서비스: 리모트 메시지 = " + remoteMessage;
+    public ApiResponseDto<String> test() {
+// String response = remoteAlimService.sms();
+        String userId = GatewayRequestHeaderUtils.getUserIdOrThrowException();
+        log.info("userId = {}", userId);
+        return ApiResponseDto.createOk(userId);
     }
 }

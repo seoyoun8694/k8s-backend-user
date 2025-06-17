@@ -21,7 +21,7 @@ spring:
     bootstrap-servers: localhost:9092
 
   jwt:
-  expires-in: 86400 # 1day
-  mobile-expires-in: 31536000
-  table-expires-in: 31536000
-  secret-key: AADfaskllew32dsfasdTG764Gdslkj298GsWg86G
+    expires-in: 86400 # 1day
+    mobile-expires-in: 31536000
+    table-expires-in: 31536000
+    secret-key: AADfaskllew32dsfasdTG764Gdslkj298GsWg86G
