@@ -2,6 +2,7 @@ package com.welab.k8s_backend_user.secret.jwt;
 
 import com.welab.k8s_backend_user.secret.jwt.dto.TokenDto;
 import com.welab.k8s_backend_user.secret.jwt.props.JwtConfigProperties;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -69,4 +70,33 @@ public class TokenGenerator {
         }
         return expiresIn;
     }
+
+    public String validateJwtToken(String refreshToken) {
+        String userId = null;
+        final Claims claims = this.verifyAndGetClaims(refreshToken);
+        if (claims == null) {
+            return null;
+        }
+        Date expirationDate = claims.getExpiration();
+        if (expirationDate == null || expirationDate.before(new Date())) {
+            return null;
+        }
+        userId = claims.get("userId", String.class);
+        String tokenType = claims.get("tokenType", String.class);
+        if (!"refresh".equals(tokenType)) {
+            return null;
+        }
+        return userId;
+    }
+
+    private Claims verifyAndGetClaims(String token) {
+        Claims claims;
+        try {
+            claims = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getPayload();} catch (Exception e) {
+            claims = null;
+        }
+        return claims;
+    }
 }
+
+

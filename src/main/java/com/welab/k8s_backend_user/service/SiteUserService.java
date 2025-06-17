@@ -4,6 +4,7 @@ import com.welab.k8s_backend_user.common.exception.BadParameter;
 import com.welab.k8s_backend_user.common.exception.NotFound;
 import com.welab.k8s_backend_user.domain.SiteUser;
 import com.welab.k8s_backend_user.domain.dto.SiteUserLoginDto;
+import com.welab.k8s_backend_user.domain.dto.SiteUserRefreshDto;
 import com.welab.k8s_backend_user.domain.dto.SiteUserRegisterDto;
 import com.welab.k8s_backend_user.domain.event.SiteUserInfoEvent;
 import com.welab.k8s_backend_user.domain.repository.SiteUserRepository;
@@ -42,5 +43,19 @@ public class SiteUserService {
         }
         if( !SecureHashUtils.matches(loginDto.getPassword(), user.getPassword())){throw new BadParameter("비밀번호가 맞지 않습니다.");
         }
-        return tokenGenerator.generateAccessRefreshToken(loginDto.getUserId(), "WEB");}
+        return tokenGenerator.generateAccessRefreshToken(loginDto.getUserId(), "WEB");
+    }
+
+    @Transactional(readOnly = true)
+    public TokenDto.AccessToken refresh(SiteUserRefreshDto refreshDto) {
+        String userId = tokenGenerator.validateJwtToken(refreshDto.getToken());
+        if (userId == null) {
+            throw new BadParameter("토큰이 유효하지 않습니다.");
+        }
+        SiteUser user = siteUserRepository.findByUserId(userId);
+        if (user == null) {
+            throw new NotFound("사용자를 찾을 수 없습니다.");
+        }
+        return tokenGenerator.generateAccessToken(userId, "WEB");
+    }
 }
